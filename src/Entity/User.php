@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -32,6 +34,36 @@ class User implements UserInterface
      * @ORM\Column(type="string")
      */
     private $password;
+
+    /**
+     * @ORM\Column(type="string", length=120, nullable=true)
+     */
+    private $fullname;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $active;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Perfil", mappedBy="usuario")
+     */
+    private $perfiles;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Eventos", inversedBy="usuario")
+     */
+    private $eventos;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Evento", inversedBy="user")
+     */
+    private $evento;
+
+    public function __construct()
+    {
+        $this->perfiles = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -109,5 +141,84 @@ class User implements UserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    public function getFullname(): ?string
+    {
+        return $this->fullname;
+    }
+
+    public function setFullname(?string $fullname): self
+    {
+        $this->fullname = $fullname;
+
+        return $this;
+    }
+
+    public function getActive(): ?bool
+    {
+        return $this->active;
+    }
+
+    public function setActive(?bool $active): self
+    {
+        $this->active = $active;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Perfil[]
+     */
+    public function getPerfiles(): Collection
+    {
+        return $this->perfiles;
+    }
+
+    public function addPerfile(Perfil $perfile): self
+    {
+        if (!$this->perfiles->contains($perfile)) {
+            $this->perfiles[] = $perfile;
+            $perfile->setUsuario($this);
+        }
+
+        return $this;
+    }
+
+    public function removePerfile(Perfil $perfile): self
+    {
+        if ($this->perfiles->contains($perfile)) {
+            $this->perfiles->removeElement($perfile);
+            // set the owning side to null (unless already changed)
+            if ($perfile->getUsuario() === $this) {
+                $perfile->setUsuario(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getEventos(): ?Eventos
+    {
+        return $this->eventos;
+    }
+
+    public function setEventos(?Eventos $eventos): self
+    {
+        $this->eventos = $eventos;
+
+        return $this;
+    }
+
+    public function getEvento(): ?Evento
+    {
+        return $this->evento;
+    }
+
+    public function setEvento(?Evento $evento): self
+    {
+        $this->evento = $evento;
+
+        return $this;
     }
 }
