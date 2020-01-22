@@ -38,10 +38,6 @@ class Eventos
      */
     private $usuario;
 
-    /**
-     * @ORM\Column(type="string", length=120, nullable=true)
-     */
-    private $operador;
 
     public function __construct()
     {
@@ -116,18 +112,6 @@ class Eventos
                 $usuario->setEventos(null);
             }
         }
-
-        return $this;
-    }
-
-    public function getOperador(): ?string
-    {
-        return $this->operador;
-    }
-
-    public function setOperador(?string $operador): self
-    {
-        $this->operador = $operador;
 
         return $this;
     }

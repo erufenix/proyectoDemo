@@ -10,11 +10,6 @@
 
 <div class="example-wrapper">
     <h1>Hello {{ controller_name }}! ✅</h1>
-
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ '/srv/http/proyectos20/proyectoDemo/src/Controller/EventoController.php'|file_link(0) }}">src/Controller/EventoController.php</a></code></li>
-        <li>Your template at <code><a href="{{ '/srv/http/proyectos20/proyectoDemo/templates/evento/index.html.twig'|file_link(0) }}">templates/evento/index.html.twig</a></code></li>
-    </ul>
+    {{ dump(eventos) }}
 </div>
 {% endblock %}

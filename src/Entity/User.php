@@ -51,19 +51,15 @@ class User implements UserInterface
     private $perfiles;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Eventos", inversedBy="usuario")
+     * @ORM\OneToMany(targetEntity="App\Entity\Evento", mappedBy="usuario")
      */
     private $eventos;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Evento", inversedBy="user")
-     */
-    private $evento;
-
     public function __construct()
     {
-        $this->perfiles = new ArrayCollection();
+        $this->eventos = new ArrayCollection();
     }
+
 
     public function getId(): ?int
     {
@@ -198,26 +194,33 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getEventos(): ?Eventos
+    /**
+     * @return Collection|Evento[]
+     */
+    public function getEventos(): Collection
     {
         return $this->eventos;
     }
 
-    public function setEventos(?Eventos $eventos): self
+    public function addEvento(Evento $evento): self
     {
-        $this->eventos = $eventos;
+        if (!$this->eventos->contains($evento)) {
+            $this->eventos[] = $evento;
+            $evento->setUsuario($this);
+        }
 
         return $this;
     }
 
-    public function getEvento(): ?Evento
+    public function removeEvento(Evento $evento): self
     {
-        return $this->evento;
-    }
-
-    public function setEvento(?Evento $evento): self
-    {
-        $this->evento = $evento;
+        if ($this->eventos->contains($evento)) {
+            $this->eventos->removeElement($evento);
+            // set the owning side to null (unless already changed)
+            if ($evento->getUsuario() === $this) {
+                $evento->setUsuario(null);
+            }
+        }
 
         return $this;
     }

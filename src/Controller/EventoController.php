@@ -2,8 +2,9 @@
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Entity\Evento;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class EventoController extends AbstractController
 {
@@ -15,7 +16,7 @@ class EventoController extends AbstractController
         $eventos = array();
         return $this->render('evento/index.html.twig', [
             'controller_name'   => 'EventoController',
-            'eventos'           => $eventos
+            'eventos'           => $this->getDoctrine()->getRepository(Evento::class)->findAll()
         ]);
     }
 }
