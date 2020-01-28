@@ -21,10 +21,12 @@ class UserFixtures extends Fixture{
         // $manager->persist($product);
         $user = new User();
 
-        $password = $this->encoder->encodePassword($user, 'qwerty');
-        $user->setPassword($password);                     
+        $password = $this->encoder->encodePassword($user, 'qwerty');                     
+        $user->setFullname('Erufenix');
+        $user->setActive(true);
         $user->setEmail('erufenix@gmail.com');
         $user->setRoles(['ROLE_ADMIN']);
+        $user->setPassword($password);
         
         $manager->persist($user);
         $manager->flush();

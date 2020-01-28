@@ -1,0 +1,109 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+
+	<script type="text/javascript">
+
+		$(document).ready(function () {
+            $("#participant-form-signup").validate({
+            submitHandler: function (form) {
+                var formData = $('#participant-form-signup').serialize();
+                var urlPath = $('#participant-form-signup').attr('action');
+
+
+$.ajax({
+
+url: urlPath,
+
+type: 'POST',
+
+dataType: 'json',
+
+data: formData,
+
+beforeSend: function () {
+
+$('#participant-form-signup:input').attr('disabled', 'disabled');
+
+}
+
+}).done(function (response) {
+
+console.log("success");
+
+
+if (response.status == true) { // swal( response.data );
+
+
+$('#login-card').addClass('hide');
+
+$('#registration-success').removeClass('hide');
+
+
+} else {
+
+
+$.toast({
+
+heading: 'Atención',
+
+text: response.message,
+
+position: 'top-right',
+
+loaderBg: '#ff6849',
+
+icon: 'error',
+
+hideAfter: 3500
+
+});
+
+
+}
+
+
+}).fail(function () {
+
+console.log("error");
+
+}).always(function () {
+
+console.log("complete");
+
+$('#participant-form-signup:input').removeAttr('disabled');
+
+});
+
+
+return
+false;
+
+},
+
+errorElement: 'div',
+
+errorPlacement: function (error, element) {
+
+var placement = $(element).data('error');
+
+if (placement) {
+
+$(placement).append(error)
+
+} else {
+
+error.insertAfter(element);
+
+}
+
+}
+
+});
+
+
+});
+	</script>
+
+
+{% endblock %}

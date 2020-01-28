@@ -8,7 +8,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class PanelController extends AbstractController
 {
     /**
-     * @Route("/panel", name="panel")
+     * @Route("/", name="app_home")
      */
     public function index()
     {
