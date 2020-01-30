@@ -32,7 +32,7 @@ class RegistroController extends AbstractController{
     }
 
     /**
-     * @Route("/registro/add",
+     * @Route("/registro/add",                                                                                                                                                                                                                                                    
      *      name="registro_add",
      *      methods="POST"
      * )

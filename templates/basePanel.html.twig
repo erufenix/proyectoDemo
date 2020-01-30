@@ -379,38 +379,12 @@
 							<ul class="navbar-nav my-lg-0"> <!-- ============================================================== -->
 							<!-- Search -->
 							<!-- ============================================================== -->
-								<li class="nav-item hidden-sm-down search-box"> <a class="nav-link hidden-sm-down text-muted waves-effect waves-dark" href="javascript:void(0)">
-									<i class="ti-search"></i>
-								</a>
-								<form class="app-search">
-									<input type="text" class="form-control" placeholder="Search & enter">
-									<a class="srh-btn">
-										<i class="ti-close"></i>
-									</a>
-								</form>
-							</li>
+
 
 							<!-- ============================================================== -->
 							<!-- Language -->
 							<!-- ============================================================== -->
-								<li class="nav-item dropdown"> <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-									<i class="flag-icon flag-icon-us"></i>
-								</a>
-								<div class="dropdown-menu dropdown-menu-right scale-up">
-									<a class="dropdown-item" href="#">
-										<i class="flag-icon flag-icon-in"></i>
-										India</a>
-									<a class="dropdown-item" href="#">
-										<i class="flag-icon flag-icon-fr"></i>
-										French</a>
-									<a class="dropdown-item" href="#">
-										<i class="flag-icon flag-icon-cn"></i>
-										China</a>
-									<a class="dropdown-item" href="#">
-										<i class="flag-icon flag-icon-de"></i>
-										Dutch</a>
-								</div>
-							</li>
+
 							<!-- ============================================================== -->
 							<!-- Profile -->
 							<!-- ============================================================== -->
@@ -427,29 +401,6 @@
 												</div>
 											</div>
 										</li>
-										<li role="separator" class="divider"></li>
-										<li>
-											<a href="#">
-												<i class="ti-user"></i>
-												My Profile</a>
-										</li>
-										<li>
-											<a href="#">
-												<i class="ti-wallet"></i>
-												My Balance</a>
-										</li>
-										<li>
-											<a href="#">
-												<i class="ti-email"></i>
-												Inbox</a>
-										</li>
-										<li role="separator" class="divider"></li>
-										<li>
-											<a href="#">
-												<i class="ti-settings"></i>
-												Account Setting</a>
-										</li>
-										<li role="separator" class="divider"></li>
 										<li>
 											<a href="{{ path('app_logout') }}">
 												<i class="fa fa-power-off"></i>
@@ -534,15 +485,6 @@
 					<div class="row page-titles"> <div class="col-md-5 align-self-center">
 						<h3 class="text-themecolor">Starter kit</h3>
 					</div>
-					<div class="col-md-7 align-self-center">
-						<ol class="breadcrumb">
-							<li class="breadcrumb-item">
-								<a href="javascript:void(0)">Home</a>
-							</li>
-							<li class="breadcrumb-item">pages</li>
-							<li class="breadcrumb-item active">Starter kit</li>
-						</ol>
-					</div>
 					<div>
 						<button class="right-side-toggle waves-effect waves-light btn-inverse btn btn-circle btn-sm pull-right m-l-10">
 							<i class="ti-settings text-white"></i>
@@ -558,13 +500,8 @@
 					<div class="container-fluid"> <!-- ============================================================== -->
 					<!-- Start Page Content -->
 					<!-- ============================================================== -->
-						<div class="row"> <div class="col-12">
-							<div class="card">
-								<div class="card-body">
-									This is some text within a card block.
-								</div>
-							</div>
-						</div>
+
+						{% block content %}{% endblock %}
 					</div>
 					<!-- ============================================================== -->
 					<!-- End PAge Content -->
@@ -727,6 +664,8 @@
 		<script src="{{ asset('assets')}}/adminpress/plugins/sparkline/jquery.sparkline.min.js"></script>
 		<!--Custom JavaScript -->
 		<script src="{{ asset('assets')}}/adminpress/horizontal/js/custom.min.js"></script>
+		<script src="{{ asset('assets')}}/js/axios/axios.js"></script>
+		{% block scripts %}{% endblock %}
 	</body>
 
 </html>

@@ -16,6 +16,7 @@
 		<!-- Bootstrap Core CSS -->
 		<link
 		href="{{ asset('assets')}}/adminpress/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ asset('assets')}}/adminpress/plugins/toast-master/css/jquery.toast.css" rel="stylesheet">
 		<!-- Custom CSS -->
 		<link
 		href="{{ asset('assets')}}/adminpress/horizontal/css/style.css" rel="stylesheet">
@@ -95,7 +96,8 @@
 		<!-- ============================================================== --><script src="{{ asset('assets')}}/adminpress/plugins/styleswitcher/jQuery.style.switcher.js"> </script>
 		<script src="{{ asset('assets')}}/form/jquery.form.min.js"></script>
 		<script src="{{ asset('assets')}}/form/jquery.validate.min.js"></script>
-		<script src="{{ asset('assets')}}/js/axios/axios.js"></script>
+    <script src="{{ asset('assets')}}/js/axios/axios.js"></script>
+    <script src="{{ asset('assets')}}/adminpress/plugins/toast-master/js/jquery.toast.js"></script>
     <script>
       jQuery.extend(jQuery.validator.messages, {
           required: "Este campo es obligatorio.",
@@ -131,8 +133,21 @@
             axios.post($("#loginform").attr('action'),$("#loginform").serialize())
             .then(function (response) {
               var data = response.data;
-              if(data.status){      
-                //location.href = "{{ url('app_login') }}";  
+              if(data.status){
+								var objr = {};
+                $.toast({
+                          heading: '',
+                          text: data.message,
+                          position: 'top-right',
+                          loaderBg:'#ff6849',
+                          icon: 'info',
+                          hideAfter: 3000, 
+                          stack: 6,
+                          beforeHide: function () {
+                            //$.redirect("{{ url('app_login') }}",objr);
+														location.href = "{{ url('app_login') }}";
+                          }
+                });
               }
             })
             .catch(function (error) {
