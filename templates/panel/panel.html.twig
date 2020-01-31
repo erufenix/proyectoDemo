@@ -1,0 +1,141 @@
+{% extends 'basePanel.html.twig' %}
+
+{% block content %}
+	<div class="row">
+		<div class="col-lg-12">
+			<div class="card">
+				<div class="card-body">
+					<div class="table-responsive slidee">
+						<div id="#toolbar" class="float-left"></div>
+						<table data-toggle="table" class="table table-striped" id="tbuser" data-url="{{ url('app_users') }}">
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+<!-- sample modal content -->
+<div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<form id="frmUser" action="" method="post">
+				<div class="modal-header">
+					<h4 class="modal-title" id="myModalLabel">Modal Heading</h4>
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				</div>
+				<div class="modal-body">
+				</div>
+				<div class="modal-footer">
+					<button type="submit" class="btn btn-info waves-effect" id="btn-action"><span></span></button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+  var modal = $("#myModal");
+	axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+
+  $('#tbuser').bootstrapTable({
+    //url:        '/registros',
+    classes: 		"table table-striped table-sm table-bordered",
+    locale: 		"es-MX",
+    pagination: true,
+    search:     true,
+    showExport: false,
+    filterControl: true,
+    columns: [
+        {
+          field: 'id',
+          title: 'ID',
+          sortable: true,
+          align: 'center',
+          valign: 'middle',
+          width: 60
+				},
+				{
+          field: 'fullname',
+          title: 'Nombre',
+          sortable: true,
+          align: 'center',
+          valign: 'middle'
+				},
+				{
+          field: 'email',
+          title: 'Correo',
+          sortable: true,
+          align: 'center',
+          valign: 'middle'
+        }									               
+      ]
+    })
+
+
+  $("#tbuser").on("click-row.bs.table", function (row, $el, field) {//.on('click',".edit", function () {
+		console.log(row, $el, field);
+		var e 			= $(this);
+		var url 		= e.attr('data-ref');
+		var raction = 'Editando...'
+		axios.post(
+								url,
+									{
+										raction 		: 'Editando...'
+									}
+							)
+							.then(function (response) {
+										var data = response.data;
+										if(data.status){
+											modal.find('.modal-title').html('Editar usuario');
+											modal.find('.modal-body').html(data.html);
+											modal.find('#btn-action').html('Editar');
+											modal.modal('show');
+										}
+							})
+							.catch(function (error) {		
+							})
+							.then(function (){             
+							});		
+					});
+
+    if ($("#frmUser").length ){
+      //axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+      $("#frmUser").validate({					
+          rules:{
+            email:{
+              email: true
+            },
+          },
+          messages:{
+          },
+          submitHandler: function(form) {
+						console.log($("#raction").val());
+            $('#btn-action').attr('disabled',true).addClass('disabled').html($("#raction").val());
+						var id 		= $("#id_user").val();
+						var path 	= $("#path").val();     
+            axios.post(path,$("#frmUser").serialize())
+            .then(function (response) {
+              var data = response.data;
+              if(data.status){
+              }
+            })
+            .catch(function (error) {
+              
+            })
+            .then(function (){             
+            });
+          },                   
+          errorPlacement: function(error, element)
+          {
+            error.insertAfter(element.parent());
+          }        
+        }
+      );
+    } 					
+
+</script>
+{% endblock %}
