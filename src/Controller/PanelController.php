@@ -104,7 +104,7 @@ class PanelController extends AbstractController
         if ($request->isXmlHttpRequest()) {
             try {
                 $user = $this->getDoctrine()->getRepository(User::class)->findOneById($id);
-                //$user->setFullname($request->request->get('fullname'));
+                $user->setFullname($request->request->get('fullName'));
                 $user->setEmail($request->request->get('email'));
                 $entityManager  = $this->getDoctrine()->getManager();
                 $entityManager->persist($user);

@@ -8,6 +8,14 @@
 					<div class="table-responsive slidee">
 						<div id="#toolbar" class="float-left"></div>
 						<table data-toggle="table" class="table table-striped" id="tbuser" data-url="{{ url('app_users') }}">
+							<thead>
+								<tr>
+									<th data-field="id" data-title="ID" data-sortable="true" data-align="center" data-valign="center" data-width="60"></th>
+									<th data-field="fullname" data-title="Nombre" data-sortable="true" data-align="center" data-valign="center"></th>
+									<th data-field="email" data-title="Correo" data-sortable="true" data-align="center" data-valign="center"></th>
+									<th data-formatter="operateFormatter" data-events='operateEvents'><span class="fa fa-cog"></span></th>
+								</tr>													
+							</thead>
 						</table>
 					</div>
 				</div>
@@ -49,58 +57,79 @@
     search:     true,
     showExport: false,
     filterControl: true,
-    columns: [
+    /*columns: [
         {
-          field: 'id',
-          title: 'ID',
-          sortable: true,
-          align: 'center',
-          valign: 'middle',
-          width: 60
+          field       : 'id',
+          title       : 'ID',
+          sortable    : true,
+          align       : 'center',
+          valign      : 'middle',
+          width       : 60
 				},
 				{
-          field: 'fullname',
-          title: 'Nombre',
-          sortable: true,
-          align: 'center',
-          valign: 'middle'
+          field       : 'fullname',
+          title       : 'Nombre',
+          sortable    : true,
+          align       : 'center',
+          valign      : 'middle'
 				},
 				{
-          field: 'email',
-          title: 'Correo',
-          sortable: true,
-          align: 'center',
-          valign: 'middle'
-        }									               
-      ]
+          field       : 'email',
+          title       : 'Correo',
+          sortable    : true,
+          align       : 'center',
+          valign      : 'middle'
+				},
+				{
+          title   	: '<i class="fa fa-cog"></i>',
+          align   	: 'center',
+					valign  	: 'middle',
+					formatter	: 'actions',
+					//events   	: 'eventos'
+        }														               
+      ]*/
     })
 
+		function operateFormatter(value, row, index) {
+				var id 	= row.id;
+				var url = '{{ path("registro_get", {'id': 'u_id'}) }}';
+				url = url.replace("u_id", id);
+				return [
+					'<a class="edit" href="javascript:void(0)" title="Editar" data-ref="' + url + '">',
+					'<i class="fa fa-pencil text-inverse m-r-10"></i>',
+					'</a>  ',
+					'<a class="remove" href="javascript:void(0)" title="Borrar">',
+					'<i class="fa fa-trash text-inverse"></i>',
+					'</a>'
+				].join('')
+			}
 
-  $("#tbuser").on("click-row.bs.table", function (row, $el, field) {//.on('click',".edit", function () {
-		console.log(row, $el, field);
-		var e 			= $(this);
-		var url 		= e.attr('data-ref');
-		var raction = 'Editando...'
-		axios.post(
-								url,
-									{
-										raction 		: 'Editando...'
-									}
-							)
-							.then(function (response) {
-										var data = response.data;
-										if(data.status){
-											modal.find('.modal-title').html('Editar usuario');
-											modal.find('.modal-body').html(data.html);
-											modal.find('#btn-action').html('Editar');
-											modal.modal('show');
-										}
-							})
-							.catch(function (error) {		
-							})
-							.then(function (){             
-							});		
-					});
+			window.operateEvents = {
+					'click .edit': function (e, value, row, index) {
+						var url 		= e.currentTarget.getAttribute('data-ref');
+						var raction = 'Editando...'
+						axios.post(
+												url,
+													{
+														raction 		: 'Editando...'
+													}
+											)
+											.then(function (response) {
+														var data = response.data;
+														if(data.status){
+															modal.find('.modal-title').html('Editar usuario');
+															modal.find('.modal-body').html(data.html);
+															modal.find('#btn-action').html('Editar');
+															$("#index").val(index);
+															modal.modal('show');
+														}
+											})
+											.catch(function (error) {		
+											})
+											.then(function (){             
+											});						
+					}
+				}
 
     if ($("#frmUser").length ){
       //axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
@@ -113,14 +142,28 @@
           messages:{
           },
           submitHandler: function(form) {
-						console.log($("#raction").val());
             $('#btn-action').attr('disabled',true).addClass('disabled').html($("#raction").val());
-						var id 		= $("#id_user").val();
-						var path 	= $("#path").val();     
+						var id 			= $("#id_user").val();
+						var path 		= $("#path").val();
+						var _index 	= 0;
             axios.post(path,$("#frmUser").serialize())
             .then(function (response) {
               var data = response.data;
               if(data.status){
+									_index = $("#index").val();
+									_data  = data.data;
+									_fullname = _data.fullname;
+									_email = _data.email;
+									modal.find('.modal-body').html('');
+									modal.modal('hide');
+									console.log(_fullname,_email);
+									$('#tbuser').bootstrapTable('updateRow', {
+													index: _index ,
+													row: {
+														fullname: _fullname,
+														email: _email
+													}
+												})									
               }
             })
             .catch(function (error) {
@@ -135,7 +178,7 @@
           }        
         }
       );
-    } 					
+    } 
 
 </script>
 {% endblock %}

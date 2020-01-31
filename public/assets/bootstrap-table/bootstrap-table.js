@@ -3444,9 +3444,9 @@
 	      return func.apply(self, args || []);
 	    }
 
-	    if (!func && typeof name === 'string' && this.sprintf.apply(this, [name].concat(_toConsumableArray(args)))) {
+	    /*if (!func && typeof name === 'string' && this.sprintf.apply(this, [name].concat(_toConsumableArray(args)))) {
 	      return this.sprintf.apply(this, [name].concat(_toConsumableArray(args)));
-	    }
+	    }*/
 
 	    return defaultValue;
 	  },
